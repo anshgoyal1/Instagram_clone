@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttergram/resourses/storage_methods.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -30,6 +31,9 @@ class AuthMethods {
             email: email, password: password);
         print(cred.toString());
 
+        String photoUrl = await StorageMethods()
+            .uploadImageToStorage('profilePics', file, false);
+
         //store the users
         await _firestore.collection('users').doc(cred.user!.uid).set({
           'email': email,
@@ -39,6 +43,7 @@ class AuthMethods {
           'profileImage': file,
           'followers': [],
           'following': [],
+          'photoUrl': photoUrl,
         });
         res = 'success';
       }

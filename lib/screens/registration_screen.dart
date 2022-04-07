@@ -1,5 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttergram/resourses/auth_methods.dart';
+import 'package:fluttergram/utils/utils.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../utils/colors.dart';
 import '../widgets/text_field_input.dart';
@@ -16,6 +21,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
+  Uint8List? _profileImage;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -24,6 +31,33 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     _bioController.dispose();
     _usernameController.dispose();
     super.dispose();
+  }
+
+  void selectImage() async {
+    Uint8List image = await pickImage(ImageSource.gallery);
+    setState(() {
+      _profileImage = image;
+    });
+  }
+
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().signUpUser(
+        email: _emailController.text,
+        password: _passwordController.text,
+        userName: _usernameController.text,
+        bio: _bioController.text,
+        file: _profileImage!);
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (res != 'success') {
+      showSnackBar(res, context);
+    }
   }
 
   @override
@@ -55,14 +89,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
               Stack(
                 children: [
-                  CircleAvatar(
-                    radius: 64,
-                    backgroundImage: NetworkImage(
-                        'https://w7.pngwing.com/pngs/340/956/png-transparent-profile-user-icon-computer-icons-user-profile-head-ico-miscellaneous-black-desktop-wallpaper.png'),
-                  ),
+                  _profileImage != null
+                      ? CircleAvatar(
+                          radius: 64,
+                          backgroundImage: MemoryImage(_profileImage!),
+                        )
+                      : CircleAvatar(
+                          radius: 64,
+                          backgroundImage: NetworkImage(
+                              'https://w7.pngwing.com/pngs/340/956/png-transparent-profile-user-icon-computer-icons-user-profile-head-ico-miscellaneous-black-desktop-wallpaper.png'),
+                        ),
                   Positioned(
                     child: IconButton(
-                        icon: Icon(Icons.add_a_photo), onPressed: () {}),
+                        icon: Icon(Icons.add_a_photo),
+                        onPressed: () {
+                          selectImage();
+                        }),
                     bottom: -10,
                     left: 80,
                   ),
@@ -116,7 +158,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
               GestureDetector(
                 child: Container(
-                  child: Text('Log in'),
+                  child: _isLoading
+                      ? Center(
+                          child: const CircularProgressIndicator(
+                          color: primaryColor,
+                        ))
+                      : Text('Register'),
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
@@ -126,9 +173,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         borderRadius: BorderRadius.circular(4)),
                   ),
                 ),
-                onTap: () {
-                  print('Log in button pressed');
-                },
+                onTap: signUpUser,
               ),
 
               SizedBox(
