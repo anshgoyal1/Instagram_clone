@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "864171316689",
+    "project_id": "flutter-gram-6511b",
+    "storage_bucket": "flutter-gram-6511b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864171316689:android:89cf632f631bb4ca963cf0",
+        "android_client_info": {
+          "package_name": "com.example.fluttergram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864171316689-u6c6bullrhn6c9iqvfctnpv1b7idsgp4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYLqOMeiuKO_caZSUTuVWYLmhplj0sDT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864171316689-u6c6bullrhn6c9iqvfctnpv1b7idsgp4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "864171316689-2egrpq03e0jr1rbsrma6nag8vl288baf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fluttergram"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
