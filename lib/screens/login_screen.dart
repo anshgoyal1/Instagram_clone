@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttergram/screens/registration_screen.dart';
 import 'package:fluttergram/utils/colors.dart';
 import 'package:fluttergram/widgets/text_field_input.dart';
+
+import '../resourses/auth_methods.dart';
+import '../responsive_layout/mobile_screen_layout.dart';
+import '../responsive_layout/responsive_layout.dart';
+import '../responsive_layout/web_screen_layout.dart';
+import '../utils/utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,12 +20,48 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().logInUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+
+    if (res == 'success') {
+    } else {
+      showSnackBar(res, context);
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            mobileScreenLayout: MobileScreenLayout(),
+            webScreenLayout: WebScreenLayout(),
+          ),
+        ),
+      );
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void navigateToSignup() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => RegistrationScreen(),
+      ),
+    );
   }
 
   @override
@@ -71,7 +114,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
               GestureDetector(
                 child: Container(
-                  child: Text('Log in'),
+                  child: _isLoading
+                      ? CircularProgressIndicator(
+                          color: primaryColor,
+                        )
+                      : Text('Log in'),
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
@@ -81,9 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(4)),
                   ),
                 ),
-                onTap: () {
-                  print('Log in button pressed');
-                },
+                onTap: loginUser,
               ),
 
               SizedBox(
@@ -99,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: EdgeInsets.symmetric(vertical: 8),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: navigateToSignup,
                     child: Container(
                       child: Text(
                         "Sign up",
