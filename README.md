@@ -1,16 +1,8 @@
 # fluttergram
 
-A new Flutter project.
+* Built a Flutter application that is similar to Instagram.
+* Enabled users to post images and descriptions, like, comment, and share them. It also has features for following and unfollowing users.
+* Used Firebase for authentication and storing data.
+* Application has most of the Instagram features which are included in Real Instagram. Built the application for IOS and Web too.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**Exposure -** Flutter, Google Firebase.
