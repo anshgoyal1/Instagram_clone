@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttergram/screens/registration_screen.dart';
 import 'package:fluttergram/utils/colors.dart';
+import 'package:fluttergram/utils/global_variables.dart';
 import 'package:fluttergram/widgets/text_field_input.dart';
 
 import '../resourses/auth_methods.dart';
@@ -69,7 +70,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 32),
+          padding: MediaQuery.of(context).size.width > webScreenSize
+              ? EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 3)
+              : EdgeInsets.symmetric(horizontal: 20),
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
