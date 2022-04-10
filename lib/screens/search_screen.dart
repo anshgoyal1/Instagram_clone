@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttergram/screens/profile_screen.dart';
 import 'package:fluttergram/utils/colors.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -22,13 +23,13 @@ class _SearchScreenState extends State<SearchScreen> {
         title: Form(
           child: TextFormField(
             controller: searchController,
-            decoration: InputDecoration(
-              labelText: 'Search for a User...',
-            ),
+            decoration:
+                const InputDecoration(labelText: 'Search for a user...'),
             onFieldSubmitted: (String _) {
               setState(() {
                 isShowUsers = true;
               });
+              print(_);
             },
           ),
         ),
@@ -49,12 +50,18 @@ class _SearchScreenState extends State<SearchScreen> {
                 }
                 return ListView.builder(
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            snapshot.data!.docs[index]['photoUrl']),
+                    return InkWell(
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ProfileScreen(
+                            uid: snapshot.data!.docs[index]['uid']),
+                      )),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              snapshot.data!.docs[index]['photoUrl']),
+                        ),
+                        title: Text(snapshot.data!.docs[index]['userName']),
                       ),
-                      title: Text(snapshot.data!.docs[index]['userName']),
                     );
                   },
                   itemCount: snapshot.data!.docs.length,

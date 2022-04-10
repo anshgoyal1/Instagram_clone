@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
                 return const ResponsiveLayout(
-                  mobileScreenLayout: RegistrationScreen(),
+                  mobileScreenLayout: MobileScreenLayout(),
                   webScreenLayout: WebScreenLayout(),
                 );
               } else if (snapshot.hasError) {
@@ -67,9 +67,7 @@ class MyApp extends StatelessWidget {
                 );
               }
             }
-            return const Center(
-              child: Text('Error'),
-            );
+            return LoginScreen();
           },
           stream: FirebaseAuth.instance.authStateChanges(),
         ),

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fluttergram/models/post.dart';
 import 'package:fluttergram/resourses/storage_methods.dart';
+import 'package:fluttergram/utils/utils.dart';
 import 'package:uuid/uuid.dart';
 
 class FireStoreMethods {
@@ -94,6 +95,33 @@ class FireStoreMethods {
   Future<void> deletePost(String postId) async {
     try {
       _firestore.collection('posts').doc(postId).delete();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> followUser(String uid, String followId) async {
+    try {
+      DocumentSnapshot snap =
+          await _firestore.collection('users').doc(uid).get();
+      List following = (snap.data()! as dynamic)['following'];
+
+      if (following.contains(followId)) {
+        await _firestore.collection('users').doc(followId).update({
+          'followers': FieldValue.arrayRemove([uid]),
+        });
+        await _firestore.collection('users').doc(followId).update({
+          'following': FieldValue.arrayRemove([followId]),
+        });
+      } else {
+        await _firestore.collection('users').doc(followId).update({
+          'followers': FieldValue.arrayUnion([uid]),
+        });
+
+        await _firestore.collection('users').doc(followId).update({
+          'following': FieldValue.arrayUnion([followId]),
+        });
+      }
     } catch (e) {
       print(e.toString());
     }
